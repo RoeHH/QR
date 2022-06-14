@@ -4,21 +4,20 @@ import { h, html } from "https://deno.land/x/htm@0.0.2/mod.tsx";
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
 
 const handler = async (req: Request) => {
-  const url = new URL(req.url).pathname.slice(1);
+  const url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.slice(1);
   if(url === "favicon.ico") { return await fetch("https://www.roeh.ch/img/logo.png"); }
-
   if(url === "") {
     return html({
       scripts: [
-        { src: "/script.js" }
+        { src: "https://cdn.jsdelivr.net/gh/RoeHH/QR/script.js" }
       ],
       title: "QR Code Generator",
       body: (
         <div class="min-h-screen justify-center bg-gray-800">
-          <div class="grid gap-0 auto-rows-min align-middle justify-center">
-            <input type="text" id="url"></input>
+          <form action="/info" method="get" class="grid gap-0 auto-rows-min align-middle justify-center">
+            <input type="text" name="url" id="url"></input>
             <button class="text-xl text-white text-center bg-blue-600" id="button">Generate QR-Code</button>
-          </div>
+          </form>
         </div>
       )
     })
