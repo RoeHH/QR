@@ -6,6 +6,24 @@ import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
 const handler = async (req: Request) => {
   const url = new URL(req.url).pathname.slice(1);
   if(url === "favicon.ico") { return await fetch("https://www.roeh.ch/img/logo.png"); }
+
+  if(url === "") {
+    return html({
+      scripts: [
+        { src: "/script.js" }
+      ],
+      title: "QR Code Generator",
+      body: (
+        <div class="min-h-screen justify-center bg-gray-800">
+          <div class="grid gap-0 auto-rows-min align-middle justify-center">
+            <input type="text" id="url"></input>
+            <button class="text-xl text-white text-center bg-blue-600" id="button">Generate QR-Code</button>
+          </div>
+        </div>
+      )
+    })
+  }
+
   const qr = "data:image/png" + await qrcode(url).then(qr => qr.slice(14));
   if (req.headers.get("User-Agent")?.slice(0, 4) === "Deno") {
     return new Response(`export default "${qr}"`, {
