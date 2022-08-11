@@ -2,6 +2,7 @@
 import { serve } from "https://deno.land/std@0.142.0/http/server.ts";
 import { h, html } from "https://deno.land/x/htm@0.0.2/mod.tsx";
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
+import { newShort } from "https://shorty.deno.dev/IX"
 
 const handler = async (req: Request) => {
   const url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.slice(1);
@@ -17,12 +18,16 @@ const handler = async (req: Request) => {
           <form action="/info" method="get" class="grid gap-0 auto-rows-min align-middle justify-center">
             <input type="text" name="url" id="url"></input>
             <button class="text-xl text-white text-center bg-blue-600" id="button">Generate QR-Code</button>
+            <p class="text-l text-white text-center bg-blue-600" >To shorten the URL add "s/" in the begining</p>
           </form>
         </div>
       )
     })
   }
-
+  if(url.slice(0,2) == "s/"){
+    { _, short }newShort(url.substring(2))
+    url = "https://shorty.deno.dev/" + short
+  }
   const qr = "data:image/png" + await qrcode(url).then(qr => qr.slice(14));
   if (req.headers.get("User-Agent")?.slice(0, 4) === "Deno") {
     return new Response(`export default "${qr}"`, {
