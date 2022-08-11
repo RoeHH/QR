@@ -25,7 +25,7 @@ const handler = async (req: Request) => {
     })
   }
   if(url.slice(0,2) == "s/"){
-    { let _, short }newShort(url.substring(2))
+    { u, short }newShort(url.substring(2))
     url = "https://shorty.deno.dev/" + short
   }
   const qr = "data:image/png" + await qrcode(url).then(qr => qr.slice(14));
