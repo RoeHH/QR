@@ -5,7 +5,7 @@ import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
 import { newShort } from "https://shorty.deno.dev/IX"
 
 const handler = async (req: Request) => {
-  const url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.slice(1);
+  let url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.slice(1);
   if(url === "favicon.ico") { return await fetch("https://www.roeh.ch/img/logo.png"); }
   if(url === "") {
     return html({
@@ -25,8 +25,7 @@ const handler = async (req: Request) => {
     })
   }
   if(url.slice(0,2) == "s/"){
-    let { x, short } = await newShort(url.substring(2))
-    url = "https://shorty.deno.dev/" + short
+    url = "https://shorty.deno.dev/" + ((await newShort(url.substring(2)))).short
   }
   const qr = "data:image/png" + await qrcode(url).then(qr => qr.slice(14));
   if (req.headers.get("User-Agent")?.slice(0, 4) === "Deno") {
