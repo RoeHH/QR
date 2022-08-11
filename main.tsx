@@ -18,14 +18,14 @@ const handler = async (req: Request) => {
           <form action="/info" method="get" class="grid gap-0 auto-rows-min align-middle justify-center">
             <input type="text" name="url" id="url"></input>
             <button class="text-xl text-white text-center bg-blue-600" id="button">Generate QR-Code</button>
-            <p class="text-l text-white text-center bg-blue-600" >To shorten the URL add "s/" in the begining</p>
+            <p class="text-l text-white text-center" >To shorten the URL add "s/" in the begining</p>
           </form>
         </div>
       )
     })
   }
   if(url.slice(0,2) == "s/"){
-    { url, short }newShort(url.substring(2))
+    let { url, short } = newShort(url.substring(2))
     url = "https://shorty.deno.dev/" + short
   }
   const qr = "data:image/png" + await qrcode(url).then(qr => qr.slice(14));
