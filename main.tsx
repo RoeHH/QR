@@ -5,7 +5,7 @@ import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
 import { newShort } from "https://raw.githubusercontent.com/RoeHH/shorty/refs/heads/master/shorty.ts"
 
 const handler = async (req: Request) => {
-  let url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.replace(new URL(req.url).origin + "/", "");
+  let url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.replace(new URL(req.url).origin + "/", "").slice(1);
   if(url === "favicon.ico") { return await fetch("https://www.roeh.ch/img/logo.png"); }
   if(url === "") {
     return html({
