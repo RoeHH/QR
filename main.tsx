@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.142.0/http/server.ts";
 import { h, html } from "https://deno.land/x/htm@0.0.2/mod.tsx";
 import { qrcode } from "https://deno.land/x/qrcode@v2.0.0/mod.ts";
-import { newShort } from "https://shorty.deno.dev/IX"
+import { newShort } from "https://raw.githubusercontent.com/RoeHH/shorty/refs/heads/master/shorty.ts"
 
 const handler = async (req: Request) => {
   let url = new URL(req.url).searchParams.get("url") || new URL(req.url).pathname.replace(new URL(req.url).origin + "/", "");
